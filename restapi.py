@@ -28,4 +28,4 @@ def carModels(make):
     return jsonify({"Car Model": [model[0] for model in myresult]})
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0", port="5001")
