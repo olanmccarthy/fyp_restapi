@@ -3,13 +3,12 @@ import mysql.connector
 app = Flask(__name__)
 
 mydb = mysql.connector.connect(
-    host = "localhost",
-    user = "olan",
-    passwd = "Ibanez260sql!",
-    database = "test"
+    host = "mysql.netsoc.co",
+    user = "olanmccarthy",
+    passwd = "asdf",
+    database = "olanmccarthy_test"
 )
 mycursor = mydb.cursor()
-#test push
 
 @app.route("/test")
 def hello():
