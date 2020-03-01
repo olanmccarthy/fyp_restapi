@@ -9,6 +9,7 @@ mydb = mysql.connector.connect(
     database = "test"
 )
 mycursor = mydb.cursor()
+#test push
 
 @app.route("/test")
 def hello():
