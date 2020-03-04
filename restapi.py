@@ -10,6 +10,8 @@ mydb = mysql.connector.connect(
 )
 mycursor = mydb.cursor()
 
+#testing git pulls
+
 @app.route("/test")
 def hello():
    return jsonify({"about": "Hello World!"})
