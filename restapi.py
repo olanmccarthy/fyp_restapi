@@ -34,7 +34,7 @@ def carModels(make):
     return jsonify({"models": [model[0] for model in myresult]})
 
 
-@app.route("carbonCost", methods=['POST'])
+@app.route("/carbonCost", methods=['POST'])
 def calculateCarbonCost():
     # calculate carbon cost of task, return json with carbonCost
     if request.json["taskType"] == "journeyTask":
