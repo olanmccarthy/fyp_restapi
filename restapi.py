@@ -44,6 +44,7 @@ def calculateCarbonCost():
             print("journeyType not recognised")
     else:
         print("not a journeyTask")
+    return jsonify({"test": "test"})
 
 
 
