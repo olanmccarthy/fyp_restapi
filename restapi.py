@@ -51,6 +51,7 @@ def calculateCarbonCost():
 
 
 def taskTypeSwitcher(taskType):
+    # execute function in dictionary based on taskType given
     try:
         return taskTypeDictionary[taskType]()
     except:
@@ -58,6 +59,7 @@ def taskTypeSwitcher(taskType):
 
 
 def journeyTypeSwitcher(journeyType):
+    # execute function in dictionary based on journeyType given
     try:
         return journeyTypeDictionary[journeyType]()
     except:
@@ -65,10 +67,9 @@ def journeyTypeSwitcher(journeyType):
 
 
 def carJourneyHandler():
+    # extract json request, calculate carbon cost and post to firestore
     try:
-        origin = request.json["origin"]
-        destination = request.json["destination"]
-        distance = request.json["distance"]
+        userId, origin, destination, distance = journeyTaskVariables(request)
         carMake = request.json["carMake"]
         carModel = request.json["carModel"]
         print("origin %s destination %s distance %s" % (origin, destination, distance))
@@ -78,19 +79,12 @@ def carJourneyHandler():
         return jsonify({"error": "something went wrong"})
 
 def bikeJourneyHandler():
+    # extract json request, calculate carbon cost and post to firestore
     try:
-        originString = request.json["origin"]  # 'lat/lng: (51.89987654029901,-8.459693938493727)'
-        regex = re.search('.*\((.*),(.*)\)', originString)
-        origin = (float(regex.group(1)), float(regex.group(2)))
-
-        destinationString = request.json["destination"]
-        regex = re.search('.*\((.*),(.*)\)', destinationString)
-        destination = (float(regex.group(1)), float(regex.group(2)))
-
-        distance = float(request.json["distance"])
+        userId, origin, destination, distance = journeyTaskVariables(request)
         isElectric = request.json["isElectric"]
 
-        print("origin %s destination %s distance %s" % (origin, destination, distance))
+        print("origin %s destination %s distance %s isElectric %s" % (origin, destination, distance, isElectric))
         return jsonify({"recieved": "carJourney"})
     except:
         print("something went wrong")
@@ -101,6 +95,23 @@ def transitJourneyHandler():
 
 def walkingJourneyHandler():
     print("walkingJourney")
+
+
+def journeyTaskVariables(request):
+    # get variables common to all journey tasks from json request
+    userId = request.json["userId"]
+
+    originString = request.json["origin"]
+    regex = re.search('.*\((.*),(.*)\)', originString)
+    origin = (float(regex.group(1)), float(regex.group(2)))
+
+    destinationString = request.json["destination"]
+    regex = re.search('.*\((.*),(.*)\)', destinationString)
+    destination = (float(regex.group(1)), float(regex.group(2)))
+
+    distance = float(request.json["distance"])
+
+    return userId, origin, destination, distance
 
 taskTypeDictionary = {
     "journeyTask": journeyTypeSwitcher
