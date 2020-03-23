@@ -39,17 +39,14 @@ def calculateCarbonCost():
     # calculate carbon cost of task, return json with carbonCost
     if request.json["taskType"] == "journeyTask":
         try:
+            # accesses dictionary containing all journey types and executes related function
             journeyTypeSwitcher(request.json["journeyType"])
         except:
             print("journeyType not recognised")
     else:
         print("not a journeyTask")
+    # todo remove this return statement, each handler should have it's own return statement
     return jsonify({"test": "test"})
-
-
-
-
-
 
 
 def taskTypeSwitcher(taskType):
@@ -58,14 +55,26 @@ def taskTypeSwitcher(taskType):
     except:
         print("taskType not defined")
 
+
 def journeyTypeSwitcher(journeyType):
     try:
         return journeyTypeDictionary[journeyType]()
     except:
         print("journeyType not defined")
 
+
 def carJourneyHandler():
-    print("carJourney")
+    try:
+        origin = request.json["origin"]
+        destination = request.json["destination"]
+        distance = request.json["distance"]
+        carMake = request.json["carMake"]
+        carModel = request.json["carModel"]
+        print("origin %s destination %s distance %s" % (origin, destination, distance))
+        return jsonify({"recieved": "carJourney"})
+    except:
+        print("something went wrong")
+        return jsonify({"error": "something went wrong"})
 
 def bikeJourneyHandler():
     print("bikeJourney")
@@ -77,9 +86,10 @@ def walkingJourneyHandler():
     print("walkingJourney")
 
 taskTypeDictionary = {
-    "journeyTask" : journeyTypeSwitcher
+    "journeyTask": journeyTypeSwitcher
 }
 
+# dict key is a journey type, value is a function to handle that type
 journeyTypeDictionary = {
     "carJourney": carJourneyHandler,
     "bikeJourney": bikeJourneyHandler,
