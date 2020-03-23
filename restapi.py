@@ -46,8 +46,6 @@ def calculateCarbonCost():
             print("journeyType not recognised")
     else:
         print("not a journeyTask")
-    # todo remove this return statement, each handler should have it's own return statement
-    return jsonify({"test": "test"})
 
 
 def taskTypeSwitcher(taskType):
@@ -73,7 +71,7 @@ def carJourneyHandler():
         carMake = request.json["carMake"]
         carModel = request.json["carModel"]
         print("origin %s destination %s distance %s" % (origin, destination, distance))
-        return jsonify({"recieved": "carJourney"})
+        return jsonify({"received": "carJourney"})
     except:
         print("something went wrong")
         return jsonify({"error": "something went wrong"})
@@ -85,7 +83,7 @@ def bikeJourneyHandler():
         isElectric = request.json["isElectric"]
 
         print("origin %s destination %s distance %s isElectric %s" % (origin, destination, distance, isElectric))
-        return jsonify({"recieved": "carJourney"})
+        return jsonify({"recieved": "bikeJourney"})
     except:
         print("something went wrong")
         return jsonify({"error": "something went wrong"})
@@ -100,6 +98,9 @@ def walkingJourneyHandler():
 def journeyTaskVariables(request):
     # get variables common to all journey tasks from json request
     userId = request.json["userId"]
+    taskType = request.json["taskType"]
+    journeyType = request.json["journeyType"]
+    taskId = request.json["taskId"]
 
     originString = request.json["origin"]
     regex = re.search('.*\((.*),(.*)\)', originString)
