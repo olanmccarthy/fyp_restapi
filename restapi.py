@@ -77,7 +77,16 @@ def carJourneyHandler():
         return jsonify({"error": "something went wrong"})
 
 def bikeJourneyHandler():
-    print("bikeJourney")
+    try:
+        origin = request.json["origin"]
+        destination = request.json["destination"]
+        distance = request.json["distance"]
+        isElectric = request.json["isElectric"]
+        print("origin %s destination %s distance %s" % (origin, destination, distance))
+        return jsonify({"recieved": "carJourney"})
+    except:
+        print("something went wrong")
+        return jsonify({"error": "something went wrong"})
 
 def transitJourneyHandler():
     print("transitJourney")
