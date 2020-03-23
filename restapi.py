@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, request
 import mysql.connector
+import re
 
 app = Flask(__name__)
 
@@ -78,10 +79,17 @@ def carJourneyHandler():
 
 def bikeJourneyHandler():
     try:
-        origin = request.json["origin"]
-        destination = request.json["destination"]
-        distance = request.json["distance"]
+        originString = request.json["origin"]  # 'lat/lng: (51.89987654029901,-8.459693938493727)'
+        regex = re.search('.*\((.*),(.*)\)', originString)
+        origin = (float(regex.group(1)), float(regex.group(2)))
+
+        destinationString = request.json["destination"]
+        regex = re.search('.*\((.*),(.*)\)', destinationString)
+        destination = (float(regex.group(1)), float(regex.group(2)))
+
+        distance = float(request.json["distance"])
         isElectric = request.json["isElectric"]
+
         print("origin %s destination %s distance %s" % (origin, destination, distance))
         return jsonify({"recieved": "carJourney"})
     except:
