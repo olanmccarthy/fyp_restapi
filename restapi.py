@@ -1,6 +1,9 @@
 from flask import Flask, jsonify, request
 import mysql.connector
 import re
+import calcCarJourneyCost
+from calcCarJourneyCost import calcCarJourneyCost
+from calcBikeJourneyCost import calcBikeJourneyCost
 
 app = Flask(__name__)
 
@@ -69,10 +72,10 @@ def journeyTypeSwitcher(journeyType):
 def carJourneyHandler():
     # extract json request, calculate carbon cost and post to firestore
     try:
-        userId, origin, destination, distance = journeyTaskVariables(request)
-        carMake = request.json["carMake"]
-        carModel = request.json["carModel"]
-        print("origin %s destination %s distance %s" % (origin, destination, distance))
+        userId, taskId, taskType, journeyType, origin, destination, distance = journeyTaskVariables(request)
+        emissionsPerMile = float(request.json['emissionsPerMile'])
+        passengers = request.json['passengers']
+        carbonCost = calcCarJourneyCost(distance, emissionsPerMile, passengers)
         return jsonify({"received": "carJourney"})
     except:
         print("something went wrong")
@@ -89,6 +92,7 @@ def bikeJourneyHandler():
             isElectric = False
 
         print("origin %s destination %s distance %s isElectric %s" % (origin, destination, distance, isElectric))
+        carbonCost = calcBikeJourneyCost(distance, isElectric)
         return jsonify({"recieved": "bikeJourney"})
     except:
         print("something went wrong")
