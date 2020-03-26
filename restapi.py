@@ -81,8 +81,12 @@ def carJourneyHandler():
 def bikeJourneyHandler():
     # extract json request, calculate carbon cost and post to firestore
     try:
-        userId, origin, destination, distance = journeyTaskVariables(request)
-        isElectric = request.json["isElectric"]
+        userId, taskId, taskType, journeyType, origin, destination, distance = journeyTaskVariables(request)
+
+        if request.json["isElectric"] == "true":
+            isElectric = True
+        else:
+            isElectric = False
 
         print("origin %s destination %s distance %s isElectric %s" % (origin, destination, distance, isElectric))
         return jsonify({"recieved": "bikeJourney"})
@@ -114,7 +118,7 @@ def journeyTaskVariables(request):
 
     distance = float(request.json["distance"])
 
-    return userId, origin, destination, distance
+    return userId, taskId, taskType, journeyType, origin, destination, distance
 
 taskTypeDictionary = {
     "journeyTask": journeyTypeSwitcher
