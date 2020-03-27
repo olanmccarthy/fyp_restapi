@@ -55,18 +55,14 @@ def calculateCarbonCost():
 
 def taskTypeSwitcher(taskType):
     # execute function in dictionary based on taskType given
-    try:
-        return taskTypeDictionary[taskType]()
-    except:
-        print("taskType not defined")
+    return taskTypeDictionary[taskType]()
+
 
 
 def journeyTypeSwitcher(journeyType):
     # execute function in dictionary based on journeyType given
-    try:
-        return journeyTypeDictionary[journeyType]()
-    except:
-        print("journeyType not defined")
+    return journeyTypeDictionary[journeyType]()
+
 
 
 def carJourneyHandler():
