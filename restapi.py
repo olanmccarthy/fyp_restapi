@@ -32,7 +32,7 @@ def carMakes():
 @app.route("/car_models/<string:make>", methods=['GET'])
 def carModels(make):
     # return json of all car models of a certain make
-    sql = "SELECT model, id FROM carModels WHERE make = '%s'" % make
+    sql = "SELECT model, id FROM cars WHERE make = '%s'" % make
     mycursor.execute(sql)
     myresult = mycursor.fetchall()
     return jsonify({"models": [{model[0]: {model[1]}} for model in myresult]})
