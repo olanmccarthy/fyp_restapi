@@ -73,7 +73,7 @@ def carJourneyHandler():
     sql = "SELECT emissionsPerMile FROM cars WHERE id = '%s'" % carId
     mycursor.execute(sql)
     myresult = mycursor.fetchall()
-    emissionsPerMile = myresult[0][0]
+    emissionsPerMile = myresult[0]
 
     carbonCost = calcCarJourneyCost(distance, emissionsPerMile, passengers)
     return jsonify({"received": "carJourney"})
