@@ -32,10 +32,10 @@ def carMakes():
 @app.route("/car_models/<string:make>", methods=['GET'])
 def carModels(make):
     # return json of all car models of a certain make
-    sql = "SELECT model FROM carModels WHERE make = '%s'" % make
+    sql = "SELECT model, id FROM carModels WHERE make = '%s'" % make
     mycursor.execute(sql)
     myresult = mycursor.fetchall()
-    return jsonify({"models": [model[0] for model in myresult]})
+    return jsonify({"models": [{model[0]: {model[1]}} for model in myresult]})
 
 
 @app.route("/carbonCost", methods=['POST'])
@@ -75,6 +75,8 @@ def carJourneyHandler():
         userId, taskId, taskType, journeyType, origin, destination, distance = journeyTaskVariables(request)
         emissionsPerMile = float(request.json['emissionsPerMile'])
         passengers = request.json['passengers']
+        carMake = request.json['carMake']
+        carModel = request.json['carModel']
         carbonCost = calcCarJourneyCost(distance, emissionsPerMile, passengers)
         return jsonify({"received": "carJourney"})
     except:
