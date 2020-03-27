@@ -74,7 +74,7 @@ def carJourneyHandler():
     print("running car journey")
     userId, taskId, taskType, journeyType, origin, destination, distance = journeyTaskVariables(request)
     carId = request.json['carId']
-    passengers = request.json['passengers']
+    passengers = int(request.json['passengers'])
     carMake = request.json['carMake']
     carModel = request.json['carModel']
 
