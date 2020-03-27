@@ -73,10 +73,16 @@ def carJourneyHandler():
     # extract json request, calculate carbon cost and post to firestore
     try:
         userId, taskId, taskType, journeyType, origin, destination, distance = journeyTaskVariables(request)
-        emissionsPerMile = float(request.json['emissionsPerMile'])
+        carId = request.json['carId']
         passengers = request.json['passengers']
         carMake = request.json['carMake']
         carModel = request.json['carModel']
+
+        sql = "SELECT emissionsPerMile FROM cars WHERE id = '%s'" % carId
+        mycursor.execute(sql)
+        myresult = mycursor.fetchall()
+        emissionsPerMile = myresult[0][0]
+
         carbonCost = calcCarJourneyCost(distance, emissionsPerMile, passengers)
         return jsonify({"received": "carJourney"})
     except:
