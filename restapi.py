@@ -35,7 +35,7 @@ def carModels(make):
     sql = "SELECT model, id FROM cars WHERE make = '%s'" % make
     mycursor.execute(sql)
     myresult = mycursor.fetchall()
-    return jsonify({"models": [{model[0]: {model[1]}} for model in myresult]})
+    return jsonify({"models": [{model[0]: model[1]} for model in myresult]})
 
 
 @app.route("/carbonCost", methods=['POST'])
