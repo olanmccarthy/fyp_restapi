@@ -75,7 +75,7 @@ def carJourneyHandler():
     mycursor.execute(sql)
     myresult = mycursor.fetchone()
     print(myresult)
-    emissionsPerMile = myresult
+    emissionsPerMile = myresult[0]
 
     carbonCost = calcCarJourneyCost(distance, emissionsPerMile, passengers)
     return jsonify({"received": "carJourney"})
