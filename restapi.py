@@ -42,12 +42,8 @@ def carModels(make):
 def calculateCarbonCost():
     # calculate carbon cost of task, return json with carbonCost
     if request.json["taskType"] == "journeyTask":
-        try:
-            # accesses dictionary containing all journey types and executes related function
-            return journeyTypeSwitcher(request.json["journeyType"])
-        except:
-            print("journeyType not recognised")
-            return jsonify({"error": "journeyType not recognised"})
+        return journeyTypeSwitcher(request.json["journeyType"])
+
     else:
         print("not a journeyTask")
         return jsonify({"error": "taskType not recognised"})
