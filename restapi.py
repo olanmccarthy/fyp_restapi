@@ -71,6 +71,7 @@ def carJourneyHandler():
     carModel = request.json['carModel']
 
     sql = "SELECT emissionsPerMile FROM cars WHERE id = '%s'" % carId
+    print(sql)
     mycursor.execute(sql)
     myresult = mycursor.fetchone()
     print(myresult)
