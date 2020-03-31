@@ -1,7 +1,9 @@
 from flask import Flask, jsonify, request
 import mysql.connector
 import re
-import calcCarJourneyCost
+import firebase_admin
+from firebase_admin import credentials
+from firebase_admin import firestore
 from calcCarJourneyCost import calcCarJourneyCost
 from calcBikeJourneyCost import calcBikeJourneyCost
 
