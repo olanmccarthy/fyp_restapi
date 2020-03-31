@@ -99,6 +99,8 @@ def carJourneyHandler():
     }
 
     db.collection(u'users').document(userId).collection('currentPlan').document(taskId).set(data)
+    data["origin"] = (data["origin"].latitude, data['origin'].longitude)
+    data["destination"] = (data["destination"].latitude, data['destination'].longitude)
 
     return jsonify(data)
 
@@ -125,6 +127,8 @@ def bikeJourneyHandler():
         }
 
         db.collection(u'users').document(userId).collection('currentPlan').document(taskId).set(data)
+        data["origin"] = (data["origin"].latitude, data['origin'].longitude)
+        data["destination"] = (data["destination"].latitude, data['destination'].longitude)
 
         return jsonify(data)
     except:
