@@ -147,11 +147,11 @@ def journeyTaskVariables(request):
 
     originString = request.json["origin"]
     regex = re.search('.*\((.*),(.*)\)', originString)
-    origin = (float(regex.group(1)), float(regex.group(2)))
+    origin = firebase.firestore.GeoPoint(float(regex.group(1)), float(regex.group(2)))
 
     destinationString = request.json["destination"]
     regex = re.search('.*\((.*),(.*)\)', destinationString)
-    destination = (float(regex.group(1)), float(regex.group(2)))
+    destination = firebase.firestore.GeoPoint(float(regex.group(1)), float(regex.group(2)))
 
     distance = float(request.json["distance"])
 
