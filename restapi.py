@@ -15,6 +15,11 @@ mydb = mysql.connector.connect(
 )
 mycursor = mydb.cursor()
 
+cred = credentials.Certificate('final-year-project-35cae-firebase-adminsdk-v5e77-c6b170ddd6.json')
+firebase_admin.initialize_app(cred)
+
+db = firestore.client()
+
 
 @app.route("/test", methods=['GET'])
 def hello():
@@ -78,7 +83,22 @@ def carJourneyHandler():
     emissionsPerMile = myresult[0]
 
     carbonCost = calcCarJourneyCost(distance, emissionsPerMile, passengers)
-    return jsonify({"received": "carJourney"})
+
+    data = {
+        "journeyType": journeyType,
+        "taskType": taskType,
+        "origin": origin,
+        "destination": destination,
+        "distance": distance,
+        "passengers": passengers,
+        "carMake": carMake,
+        "carModel": carModel,
+        "carbonCost": carbonCost
+    }
+
+    db.collection(u'users').document(userId).collection('currentPlan').document(taskId).set(data)
+
+    return jsonify(data)
 
 def bikeJourneyHandler():
     # extract json request, calculate carbon cost and post to firestore
@@ -90,9 +110,21 @@ def bikeJourneyHandler():
         else:
             isElectric = False
 
-        print("origin %s destination %s distance %s isElectric %s" % (origin, destination, distance, isElectric))
         carbonCost = calcBikeJourneyCost(distance, isElectric)
-        return jsonify({"recieved": "bikeJourney"})
+
+        data = {
+            "journeyType": journeyType,
+            "taskType": taskType,
+            "origin": origin,
+            "destination": destination,
+            "distance": distance,
+            "isElectric": isElectric,
+            "carbonCost": carbonCost
+        }
+
+        db.collection(u'users').document(userId).collection('currentPlan').document(taskId).set(data)
+
+        return jsonify(data)
     except:
         print("something went wrong")
         return jsonify({"error": "something went wrong"})
@@ -123,6 +155,10 @@ def journeyTaskVariables(request):
 
     return userId, taskId, taskType, journeyType, origin, destination, distance
 
+def addToCurrentPlan(userId, task):
+    # add plan with carbon cost to firebase
+    return
+
 taskTypeDictionary = {
     "journeyTask": journeyTypeSwitcher
 }
@@ -134,7 +170,6 @@ journeyTypeDictionary = {
     "transitJourney": transitJourneyHandler,
     "walkingJourney": walkingJourneyHandler
 }
-
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5001)
