@@ -70,39 +70,42 @@ def journeyTypeSwitcher(journeyType):
 
 def carJourneyHandler():
     # extract json request, calculate carbon cost and post to firestore
-    print("running car journey")
-    userId, taskId, taskType, journeyType, origin, destination, distance = journeyTaskVariables(request)
-    carId = request.json['carId']
-    passengers = int(request.json['passengers'])
-    carMake = request.json['carMake']
-    carModel = request.json['carModel']
+    try:
+        userId, taskId, taskType, journeyType, origin, destination, distance = journeyTaskVariables(request)
+        carId = request.json['carId']
+        passengers = int(request.json['passengers'])
+        carMake = request.json['carMake']
+        carModel = request.json['carModel']
 
-    sql = "SELECT emissionsPerMile FROM cars WHERE id = '%s'" % carId
-    print(sql)
-    mycursor.execute(sql)
-    myresult = mycursor.fetchone()
-    print(myresult)
-    emissionsPerMile = myresult[0]
+        sql = "SELECT emissionsPerMile FROM cars WHERE id = '%s'" % carId
+        mycursor.execute(sql)
+        myresult = mycursor.fetchone()
+        emissionsPerMile = myresult[0]
 
-    carbonCost = calcCarJourneyCost(distance, emissionsPerMile, passengers)
+        carbonCost = calcCarJourneyCost(distance, emissionsPerMile, passengers)
 
-    data = {
-        "journeyType": journeyType,
-        "taskType": taskType,
-        "origin": origin,
-        "destination": destination,
-        "distance": distance,
-        "passengers": passengers,
-        "carMake": carMake,
-        "carModel": carModel,
-        "carbonCost": carbonCost
-    }
+        data = {
+            "journeyType": journeyType,
+            "taskType": taskType,
+            "userId": userId,
+            "taskId": taskId,
+            "origin": origin,
+            "destination": destination,
+            "distance": distance,
+            "passengers": passengers,
+            "carMake": carMake,
+            "carModel": carModel,
+            "carbonCost": carbonCost
+        }
 
-    db.collection(u'users').document(userId).collection('currentPlan').document(taskId).set(data)
-    data["origin"] = (data["origin"].latitude, data['origin'].longitude)
-    data["destination"] = (data["destination"].latitude, data['destination'].longitude)
+        db.collection(u'users').document(userId).collection('currentPlan').document(taskId).set(data)
+        data["origin"] = (data["origin"].latitude, data['origin'].longitude)
+        data["destination"] = (data["destination"].latitude, data['destination'].longitude)
 
-    return jsonify(data)
+        return jsonify(data)
+    except:
+        print("something went wrong")
+        return jsonify({"ERROR": "Something went wrong"})
 
 def bikeJourneyHandler():
     # extract json request, calculate carbon cost and post to firestore
@@ -119,6 +122,8 @@ def bikeJourneyHandler():
         data = {
             "journeyType": journeyType,
             "taskType": taskType,
+            "userId": userId,
+            "taskId": taskId,
             "origin": origin,
             "destination": destination,
             "distance": distance,
