@@ -7,8 +7,8 @@ class Task:
 
 
 class Journey(Task):
-    def __init__(self, taskId, carbonCost, taskType, origin, destination, journeyType, distance):
-        super().__init__(taskId, carbonCost, taskType)
+    def __init__(self, userId, taskId, carbonCost, taskType, origin, destination, journeyType, distance):
+        super().__init__(userId, taskId, carbonCost, taskType)
         self.origin = origin
         self.destination = destination
         self.journeyType = journeyType
@@ -16,15 +16,15 @@ class Journey(Task):
 
 
 class BikeJourney(Journey):
-    def __init__(self, taskId, carbonCost, taskType, origin, destination, journeyType, distance, isElectric):
-        super().__init__(taskId, carbonCost, taskType, origin, destination, journeyType, distance)
+    def __init__(self, userId, taskId, carbonCost, taskType, origin, destination, journeyType, distance, isElectric):
+        super().__init__(userId, taskId, carbonCost, taskType, origin, destination, journeyType, distance)
         self.isElectric = isElectric
 
 
 class CarJourney(Journey):
-    def __init__(self, taskId, carbonCost, taskType, origin, destination, journeyType, distance, carMake, carModel,
+    def __init__(self, userId, taskId, carbonCost, taskType, origin, destination, journeyType, distance, carMake, carModel,
                  passengers, carId):
-        super().__init__(taskId, carbonCost, taskType, origin, destination, journeyType, distance)
+        super().__init__(userId, taskId, carbonCost, taskType, origin, destination, journeyType, distance)
         self.carMake = carMake
         self.carModel = carModel
         self.passengers = passengers
@@ -32,5 +32,5 @@ class CarJourney(Journey):
 
 
 class WalkingJourney(Journey):
-    def __init__(self, taskId, carbonCost, taskType, origin, destination, journeyType, distance):
-        super().__init__(taskId, carbonCost, taskType, origin, destination, journeyType, distance)
+    def __init__(self, userId, taskId, carbonCost, taskType, origin, destination, journeyType, distance):
+        super().__init__(userId, taskId, carbonCost, taskType, origin, destination, journeyType, distance)
