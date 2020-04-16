@@ -1,5 +1,5 @@
 class Task:
-    def __init__(userId, taskId, carbonCost, taskType):
+    def __init__(self, userId, taskId, carbonCost, taskType):
         self.userId = userId
         self.taskId = taskId
         self.taskType = taskType
