@@ -185,7 +185,7 @@ def createSuggestion(task):
         url = "https://maps.googleapis.com/maps/api/directions/json?origin=%f,%f&destination=%f,%f&mode=walking&key=%s" % (
         task.origin.latitude, task.origin.longitude, task.destination.latitude, task.destination.longitude, key)
         response = requests.get(url)
-        print(response.json)
+        print(response.json())
 
     return
 
