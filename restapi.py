@@ -114,17 +114,17 @@ def carJourneyHandler():
 
 def bikeJourneyHandler():
     # extract json request, calculate carbon cost and post to firestore
-    try:
-        userId, taskId, taskType, journeyType, origin, destination, distance = journeyTaskVariables(request)
 
-        if request.json["isElectric"] == "true":
-            isElectric = True
-        else:
-            isElectric = False
+    userId, taskId, taskType, journeyType, origin, destination, distance = journeyTaskVariables(request)
 
-        carbonCost = calcBikeJourneyCost(distance, isElectric)
+    if request.json["isElectric"] == "true":
+        isElectric = True
+    else:
+        isElectric = False
 
-        data = {
+    carbonCost = calcBikeJourneyCost(distance, isElectric)
+
+    data = {
             "journeyType": journeyType,
             "taskType": taskType,
             "userId": userId,
@@ -134,18 +134,15 @@ def bikeJourneyHandler():
             "distance": distance,
             "isElectric": isElectric,
             "carbonCost": carbonCost
-        }
+    }
 
-        db.collection(u'users').document(userId).collection('currentPlan').document(taskId).set(data)
-        data["origin"] = (data["origin"].latitude, data['origin'].longitude)
-        data["destination"] = (data["destination"].latitude, data['destination'].longitude)
-        task = BikeJourney(taskId, carbonCost, taskType, origin, destination, journeyType, distance, isElectric)
-        createSuggestion(task)
+    db.collection(u'users').document(userId).collection('currentPlan').document(taskId).set(data)
+    data["origin"] = (data["origin"].latitude, data['origin'].longitude)
+    data["destination"] = (data["destination"].latitude, data['destination'].longitude)
+    task = BikeJourney(taskId, carbonCost, taskType, origin, destination, journeyType, distance, isElectric)
+    createSuggestion(task)
 
-        return jsonify(data)
-    except:
-        print("something went wrong")
-        return jsonify({"error": "something went wrong"})
+    return jsonify(data)
 
 def transitJourneyHandler():
     print("transitJourney")
