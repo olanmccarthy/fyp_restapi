@@ -104,7 +104,7 @@ def carJourneyHandler():
         db.collection(u'users').document(userId).collection('currentPlan').document(taskId).set(data)
         data["origin"] = (data["origin"].latitude, data['origin'].longitude)
         data["destination"] = (data["destination"].latitude, data['destination'].longitude)
-        task = CarJourney(taskId, carbonCost, taskType, origin, destination, journeyType, distance, carMake, carModel, passengers, carId)
+        task = CarJourney(userId, taskId, carbonCost, taskType, origin, destination, journeyType, distance, carMake, carModel, passengers, carId)
         createSuggestion(task)
 
         return jsonify(data)
@@ -139,7 +139,7 @@ def bikeJourneyHandler():
     db.collection(u'users').document(userId).collection('currentPlan').document(taskId).set(data)
     data["origin"] = (data["origin"].latitude, data['origin'].longitude)
     data["destination"] = (data["destination"].latitude, data['destination'].longitude)
-    task = BikeJourney(taskId, carbonCost, taskType, origin, destination, journeyType, distance, isElectric)
+    task = BikeJourney(userId, taskId, carbonCost, taskType, origin, destination, journeyType, distance, isElectric)
     createSuggestion(task)
 
     return jsonify(data)
