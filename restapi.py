@@ -178,13 +178,16 @@ def addToCurrentPlan(userId, task):
     return
 
 def createSuggestion(task):
+    key = "AIzaSyB-NE08rCPIfG_nkHi-RqAVf4srw-msDUE"
     if isinstance(task, CarJourney):
-        url = "https://maps.googleapis.com/maps/api/directions/json?origin=%f,%f&destination=%f,%f&mode=transit" % (
-        task.origin.latitude, task.origin.longitude, task.destination.latitude, task.destination.longitude)
+        url = "https://maps.googleapis.com/maps/api/directions/json?origin=%f,%f&destination=%f,%f&mode=transit&key=%s" % (
+        task.origin.latitude, task.origin.longitude, task.destination.latitude, task.destination.longitude, key)
+        response = requests.get(url)
 
     elif isinstance(task, BikeJourney):
-        url = "https://maps.googleapis.com/maps/api/directions/json?origin=%f,%f&destination=%f,%f&mode=walking" % (
-        task.origin.latitude, task.origin.longitude, task.destination.latitude, task.destination.longitude)
+        url = "https://maps.googleapis.com/maps/api/directions/json?origin=%f,%f&destination=%f,%f&mode=walking&key=%s" % (
+        task.origin.latitude, task.origin.longitude, task.destination.latitude, task.destination.longitude, key)
+        response requests.get(url)
 
     return
 
