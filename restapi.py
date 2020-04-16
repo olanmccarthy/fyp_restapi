@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 import mysql.connector
 import re
 import firebase_admin
+import requests
 from firebase_admin import credentials
 from firebase_admin import firestore
 from calcCarJourneyCost import calcCarJourneyCost
@@ -89,6 +90,7 @@ def carJourneyHandler():
             "taskType": taskType,
             "userId": userId,
             "taskId": taskId,
+            "carId": carId,
             "origin": origin,
             "destination": destination,
             "distance": distance,
