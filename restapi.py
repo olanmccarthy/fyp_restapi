@@ -3,7 +3,7 @@ import mysql.connector
 import re
 import firebase_admin
 import requests
-import Models
+from Models import *
 from firebase_admin import credentials
 from firebase_admin import firestore
 from calcCarJourneyCost import calcCarJourneyCost
