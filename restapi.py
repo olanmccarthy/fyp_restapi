@@ -3,6 +3,7 @@ import mysql.connector
 import re
 import firebase_admin
 import requests
+import Models
 from firebase_admin import credentials
 from firebase_admin import firestore
 from calcCarJourneyCost import calcCarJourneyCost
@@ -103,6 +104,8 @@ def carJourneyHandler():
         db.collection(u'users').document(userId).collection('currentPlan').document(taskId).set(data)
         data["origin"] = (data["origin"].latitude, data['origin'].longitude)
         data["destination"] = (data["destination"].latitude, data['destination'].longitude)
+        task = CarJourney(taskId, carbonCost, taskType, origin, destination, journeyType, distance, carMake, carModel, passengers, carId)
+        createSuggestion(task)
 
         return jsonify(data)
     except:
@@ -136,6 +139,8 @@ def bikeJourneyHandler():
         db.collection(u'users').document(userId).collection('currentPlan').document(taskId).set(data)
         data["origin"] = (data["origin"].latitude, data['origin'].longitude)
         data["destination"] = (data["destination"].latitude, data['destination'].longitude)
+        task = BikeJourney(taskId, carbonCost, taskType, origin, destination, journeyType, distance, isElectric)
+        createSuggestion(task)
 
         return jsonify(data)
     except:
@@ -170,6 +175,17 @@ def journeyTaskVariables(request):
 
 def addToCurrentPlan(userId, task):
     # add plan with carbon cost to firebase
+    return
+
+def createSuggestion(task):
+    if isinstance(task, CarJourney):
+        url = "https://maps.googleapis.com/maps/api/directions/json?origin=%f,%f&destination=%f,%f&mode=transit" % (
+        task.origin.latitude, task.origin.longitude, task.destination.latitude, task.destination.longitude)
+
+    elif isinstance(task, BikeJourney):
+        url = "https://maps.googleapis.com/maps/api/directions/json?origin=%f,%f&destination=%f,%f&mode=walking" % (
+        task.origin.latitude, task.origin.longitude, task.destination.latitude, task.destination.longitude)
+
     return
 
 taskTypeDictionary = {
